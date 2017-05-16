@@ -31,10 +31,10 @@ app.get("/all", function(req, res) {
   });
 });
 app.get("/scrape", function(req, res){
-  request("https://www.cnn.com/", function(error, response, html) {
+  request("https://news.ycombinator.com/", function(error, response, html) {
     var $ = cheerio.load(html);
 
-    $(".cd__headline").each(function(i, element){
+    $(".title").each(function(i, element){
       var title = $(this).children("a").text();
       var link = $(this).children("a").attr("href");
       // if there is a title
