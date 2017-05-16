@@ -3,8 +3,28 @@ var express = require("express");
 var mongojs = require("mongojs");
 var request = require("request");
 var cheerio = require("cheerio");
+var logger = require("morgan");
+var bodyParser = require("body-parser");
+// Requiring models
+var userComment = require("./models/userComment.js");
+var Story = require("./models/Story.js");
+
+mongoose.Promise = Promise;
 // initialize express
 var app = express();
+// Use morgan and body parser with our app
+app.use(logger("dev"));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+// pulling in handlebars
+app.use(methodOverride("_method"));
+var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({
+  defaultLayout: "main"
+}));
+app.set("view engine", "handlebars");
 // database config
 var databaseUrl = "scraper";
 var collections = ["scrapedData"];
@@ -60,6 +80,16 @@ app.get("/scrape", function(req, res){
     });
   });
   res.send("Completed Scrape");
+});
+app.get("/stories", function(req, res) {
+  Story.find({}, function(error, doc){
+    if(error){
+      res.send(error);
+    }
+    else{
+      res.send(doc);
+    }
+  });
 });
 // Listen on port 3000
 app.listen(3000, function() {
