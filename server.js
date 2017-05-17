@@ -15,7 +15,6 @@ var Story = require("./models/Story.js");
 mongoose.Promise = Promise;
 // Database configuration with mongoose
 
-mongoose.connect('mongodb://heroku_g61tlp2b:rdr8sa25ok5nn2aej07buv0j8k@ds143151.mlab.com:43151/heroku_g61tlp2b');
 var db = mongoose.connection;
 
 // Show any mongoose errors
@@ -116,6 +115,7 @@ app.get("/scrape", function(req, res){
   });
   res.send("Completed Scrape");
 });
+mongoose.connect('mongodb://heroku_g61tlp2b:rdr8sa25ok5nn2aej07buv0j8k@ds143151.mlab.com:43151/heroku_g61tlp2b');
 
 // Listen on port 3000
 app.listen(3000, function() {
