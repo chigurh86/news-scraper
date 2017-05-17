@@ -46,7 +46,7 @@ app.engine("handlebars", exphbs({
 }));
 app.set("view engine", "handlebars");
 // database config
-var databaseUrl = "newsscraperthing";
+var databaseUrl = "scraper";
 var collections = ["scrapedData"];
 // link mongojs to db variable
 var db = mongojs(databaseUrl, collections);
