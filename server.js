@@ -5,11 +5,28 @@ var request = require("request");
 var cheerio = require("cheerio");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
+var methodOverride = require("method-override");
+
 // Requiring models
 var userComment = require("./models/userComment.js");
 var Story = require("./models/Story.js");
 
 mongoose.Promise = Promise;
+// Database configuration with mongoose
+
+mongoose.connect("mongodb://localhost/mongoosearticles");
+var db = mongoose.connection;
+
+// Show any mongoose errors
+db.on("error", function(error) {
+  console.log("Mongoose Error: ", error);
+});
+
+// Once logged in to the db through mongoose, log a success message
+db.once("open", function() {
+  console.log("Mongoose connection successful.");
+});
 // initialize express
 var app = express();
 // Use morgan and body parser with our app
@@ -17,6 +34,9 @@ app.use(logger("dev"));
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+// Make public a static dir
+app.use(express.static("public"));
+
 // pulling in handlebars
 app.use(methodOverride("_method"));
 var exphbs = require("express-handlebars");
@@ -35,10 +55,10 @@ db.on("error", function(error){
 });
 // Main route
 app.get("/", function(req, res) {
-  res.send("News Scraper");
+    res.render("index");
 });
 // Retrieve data from the db
-app.get("/all", function(req, res) {
+app.get("/stories", function(req, res) {
   db.scrapedData.find({}, function(error, found) {
     // Throw any errors to the console
     if (error) {
@@ -47,9 +67,11 @@ app.get("/all", function(req, res) {
     // If there are no errors, send the data to the browser as a json
     else {
       res.json(found);
+
     }
   });
 });
+// scraping the data
 app.get("/scrape", function(req, res){
   request("https://news.ycombinator.com/", function(error, response, html) {
     var $ = cheerio.load(html);
@@ -81,16 +103,7 @@ app.get("/scrape", function(req, res){
   });
   res.send("Completed Scrape");
 });
-app.get("/stories", function(req, res) {
-  Story.find({}, function(error, doc){
-    if(error){
-      res.send(error);
-    }
-    else{
-      res.send(doc);
-    }
-  });
-});
+
 // Listen on port 3000
 app.listen(3000, function() {
   console.log("App running on port 3000!");
