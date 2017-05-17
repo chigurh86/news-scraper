@@ -67,11 +67,24 @@ app.get("/stories", function(req, res) {
     // If there are no errors, send the data to the browser as a json
     else {
       res.json(found);
-
     }
   });
 });
-// scraping the data
+// This will grab an article by it's ObjectId
+app.get("/stories/:id", function(req, res) {
+  Story.findOne({"_id": req.params.id})
+  .populate("note")
+  .exec(function(error, doc){
+    if(error){
+      res.send(error);
+    }
+    else{
+      res.send(doc);
+    }
+  });
+});
+
+// // scraping the data
 app.get("/scrape", function(req, res){
   request("https://news.ycombinator.com/", function(error, response, html) {
     var $ = cheerio.load(html);
