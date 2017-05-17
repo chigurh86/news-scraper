@@ -1,4 +1,4 @@
-// dependencies
+// Dependencies
 var express = require("express");
 var mongojs = require("mongojs");
 var request = require("request");
@@ -15,6 +15,7 @@ var Story = require("./models/Story.js");
 mongoose.Promise = Promise;
 // Database configuration with mongoose
 
+mongoose.connect("mongodb://heroku_g61tlp2b:rdr8sa25ok5nn2aej07buv0j8k@ds143151.mlab.com:43151/heroku_g61tlp2b");
 var db = mongoose.connection;
 
 // Show any mongoose errors
@@ -45,7 +46,7 @@ app.engine("handlebars", exphbs({
 }));
 app.set("view engine", "handlebars");
 // database config
-var databaseUrl = "scraper";
+var databaseUrl = "newsscraperthing";
 var collections = ["scrapedData"];
 // link mongojs to db variable
 var db = mongojs(databaseUrl, collections);
@@ -83,6 +84,30 @@ app.get("/stories/:id", function(req, res) {
   });
 });
 
+
+  // Add a note to a saved article
+  app.post('/stories/:id', function (req, res) {
+      //create a new note with req.body
+      var newComment = new userComment(req.body);
+      //save newNote to the db
+      newComment.save(function (err, doc) {
+          // Log any errors
+          if (err) console.log(err);
+          //find and update the note
+          Story.findOneAndUpdate(
+              {_id: req.params.id},{'userComment': doc._id})
+              .exec(function(err, doc){
+              if (err){
+                console.log(err);
+              }
+              else {
+                res.send(doc);
+              }
+              });
+          });
+      });
+
+
 // // scraping the data
 app.get("/scrape", function(req, res){
   request("https://news.ycombinator.com/", function(error, response, html) {
@@ -115,7 +140,6 @@ app.get("/scrape", function(req, res){
   });
   res.send("Completed Scrape");
 });
-mongoose.connect("mongodb://heroku_g61tlp2b:rdr8sa25ok5nn2aej07buv0j8k@ds143151.mlab.com:43151/heroku_g61tlp2b");
 
 // Listen on port 3000
 app.listen(3000, function() {
