@@ -18,17 +18,8 @@ $(document).on("click", "p", function() {
 $.ajax({
   method: "GET",
   url: "/stories/" + thisId
-})
-  // With that done, add the note information to the page
-  .done(function(data) {
-    console.log("sdcsdcsd: "+ JSON.stringify(data));
-    $("#stories").append("<h2>" + data.title + "</h2>");
-    // An input to enter a new title
-    $("#stories").append("<input id='titleinput' name='title' >");
-    // A textarea to add a new note body
-    $("#stories").append("<textarea id='bodyinput' name='body'></textarea>");
-    // A button to submit a new note, with the id of the article saved to it
-    $("#stories").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+}).done(function(data) {
+    $("#stories").append("<div class=row>"+"<h2>Comments</h2><form><textarea id='bodyinput' name='body'></textarea><br><button data-id='" + data._id + "' id='savenote'>Save Note</button></form></div>");
 
 
     // If there's a note in the article
