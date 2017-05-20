@@ -1,10 +1,19 @@
 <div class="container">
     <div class="row  panel panel-default">
-        <div class="col-xs-12 text-center jumbotron" id="top-bar">
+        <div class="col-xs-12 jumbotron" id="top-bar">
             <h1>News Scraper!</h1>
         </div>
-        <div class="col-xs-3"></div>
-        <div id="stories" class="col-xs-6 text-center" class="task">
+        <div class="col-xs-12" id="top-bar">
+            {{#each scrapedData}}
+              <div class="well">
+                    <span>{{this.title}}</span><br>
+                    <a class="" href="{{this.link}}">{{this.link}}</a><br>
+                    <textarea class="theComment" type="text" name="comment" rows="8" cols="80"></textarea><br>
+                    <button type="submit" data-id={{this._id}}
+                    class="savenote"class='btn btn-primary btn-sm' type="button"
+                    name="button">Save Comment</button>
+              </div>
+            {{/each}}
         </div>
     </div>
 </div>

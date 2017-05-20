@@ -55,7 +55,7 @@ db.on("error", function(error){
 });
 // Main route
 app.get("/", function(req, res) {
-    res.render("index");
+    res.redirect("/stories");
 });
 // Retrieve data from the db
 app.get("/stories", function(req, res) {
@@ -66,7 +66,8 @@ app.get("/stories", function(req, res) {
     }
     // If there are no errors, send the data to the browser as a json
     else {
-      res.json(found);
+      // res.json(found);
+      res.render("index", { scrapedData: found });
     }
   });
 });
@@ -86,16 +87,19 @@ app.get("/stories/:id", function(req, res) {
 
 
   // Add a note to a saved article
-  app.post('/stories/:id', function (req, res) {
+  app.post('/stories/save/:id', function (req, res) {
+
+    console.log(req.body.value);
       //create a new note with req.body
-      var newComment = new userComment(req.body);
+      var newComment = new userComment({title: "", body: req.body.value});
+
       //save newNote to the db
       newComment.save(function (err, doc) {
           // Log any errors
           if (err) console.log(err);
           //find and update the note
           Story.findOneAndUpdate(
-              {_id: req.params.id},{'userComment': doc._id})
+              {'_id': req.params.id},{'userComment': doc._id})
               .exec(function(err, doc){
               if (err){
                 console.log(err);

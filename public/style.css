@@ -1,0 +1,16 @@
+ul{
+  list-style: none;
+}
+li{
+  list-style: none;
+}
+.lesswide{
+  width: 40%;
+  display: block;
+}
+.maxwidth{
+  max-width: 200px;
+}
+.shorten{
+  width: 95%;
+}
