@@ -16,20 +16,6 @@
 
 {{{ body }}}
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<!-- <script src="app.js"></script> -->
-<script type="text/javascript">
-$(document).on('click', '.savenote', function(){
-  var id = $(this).attr("data-id");
-  $.ajax({
-    method: "POST",
-    url: "/stories/save/"+ id,
-    data: {
-      value: $(".theComment").val()
-    }
-  }).done(function(data){
-    // console.log("data"+data);
-  });
-});
-</script>
+<script src="app.js"></script>
 </body>
 </HTML>
