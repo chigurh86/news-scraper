@@ -8,7 +8,9 @@ $(document).ready(function(){
         value: $(".theComment").val()
       }
     }).done(function(data){
-      // console.log("data"+data);
+      alert("Comment saved!");
+      $(".theComment").val('');
     });
+
   });
 });

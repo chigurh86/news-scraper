@@ -72,31 +72,12 @@ app.get("/stories", function(req, res) {
     }
   });
 });
-// // This will grab an article by it's ObjectId
-// app.get("/stories/:id", function(req, res) {
-//   Story.findOne({"_id": req.params.id})
-//   .populate("note")
-//   .exec(function(error, doc){
-//     if(error){
-//       res.send(error);
-//     }
-//     else{
-//       res.send(doc);
-//     }
-//   });
-// });
-
-
   // Add a note to a saved article
   app.post('/stories/save/:id', function (req, res) {
-
-    // console.log("the body: "+req.body.value);
       //create a new note with req.body
       var newComment = new userComment({title: "", body: req.body.value});
-
-      //save newNote to the db
+      //save newComment to the db
       newComment.save(function (err, doc) {
-
           // Log any errors
           if (err) console.log(err);
           //find and update the note
@@ -117,7 +98,6 @@ app.get("/stories", function(req, res) {
 app.get("/scrape", function(req, res){
   request("https://news.ycombinator.com/", function(error, response, html) {
     var $ = cheerio.load(html);
-
     $(".title").each(function(i, element){
       var title = $(this).children("a").text();
       var link = $(this).children("a").attr("href");
