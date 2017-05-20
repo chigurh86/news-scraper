@@ -90,12 +90,13 @@ app.get("/stories", function(req, res) {
   // Add a note to a saved article
   app.post('/stories/save/:id', function (req, res) {
 
-    console.log(req.body.value);
+    // console.log("the body: "+req.body.value);
       //create a new note with req.body
       var newComment = new userComment({title: "", body: req.body.value});
 
       //save newNote to the db
       newComment.save(function (err, doc) {
+
           // Log any errors
           if (err) console.log(err);
           //find and update the note
@@ -103,7 +104,6 @@ app.get("/stories", function(req, res) {
               {'_id': req.params.id},{'userComment': doc._id})
               .exec(function(err, doc){
               if (err){
-                console.log(err);
               }
               else {
                 res.send(doc);
