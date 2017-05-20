@@ -11,6 +11,5 @@ $(document).ready(function(){
       alert("Comment saved!");
       $(".theComment").val('');
     });
-
   });
 });
