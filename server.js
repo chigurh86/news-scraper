@@ -71,19 +71,19 @@ app.get("/stories", function(req, res) {
     }
   });
 });
-// This will grab an article by it's ObjectId
-app.get("/stories/:id", function(req, res) {
-  Story.findOne({"_id": req.params.id})
-  .populate("note")
-  .exec(function(error, doc){
-    if(error){
-      res.send(error);
-    }
-    else{
-      res.send(doc);
-    }
-  });
-});
+// // This will grab an article by it's ObjectId
+// app.get("/stories/:id", function(req, res) {
+//   Story.findOne({"_id": req.params.id})
+//   .populate("note")
+//   .exec(function(error, doc){
+//     if(error){
+//       res.send(error);
+//     }
+//     else{
+//       res.send(doc);
+//     }
+//   });
+// });
 
 
   // Add a note to a saved article
